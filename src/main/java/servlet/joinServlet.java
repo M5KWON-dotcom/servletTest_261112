@@ -36,7 +36,7 @@ public class joinServlet extends HttpServlet {
 		String uname = request.getParameter("username");
 	
 		
-		String sql= "INSERT INTO member(userid, userpw, username,userdate ) VALUES (?,?,?,?)";
+		String sql= "INSERT INTO member(userid, userpw, username)VALUES (?,?,?)";
 		
 		  String driverName="com.mysql.jdbc.Driver";
 	      String url= "jdbc:mysql://localhost:3306/boardtest";
@@ -59,9 +59,17 @@ public class joinServlet extends HttpServlet {
 	   		  int result = pstmt.executeUpdate();
 	       	  
 	       	  if(result==1){
-	       		  System.out.println("");
+	       		System.out.println("회원 가입 성공!!");
+	       		//다시포장하기
+	       		request.setAttribute("uid", userid);
+	       		request.setAttribute("upw", userpw);
+	       		request.setAttribute("uname", uname);
+	       		//request 객체가 joinsuccess.jsp 에 전달이 안됨
+	       		//response.sendRedirect("joinSuccess.jsp"); 전달하는값이 필요없이 다른페이지로 이동하는방법
+	       		request.getRequestDispatcher("joinSuccess.jsp").forward(request, response);
+	       	    //서블릿이 현재 가지고 있는 리퀘스트 객체와 리스폰스 객체를 같이 조인썩세스.제이에스피에 보냄
 	       	  }else{
-	       		 System.out.println("");
+	       		System.out.println("회원 가입 실패!!");
 	       	  }
 	      }catch(Exception e){
 	    	     e.printStackTrace();
